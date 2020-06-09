@@ -9,7 +9,7 @@ namespace WindowsFormsApp1
         public static string space(int db)
         {
             string ret = "";
-            for (int i = 0; i > db; i++) ret += " ";
+            for (int i = 0; i < db; i++)  ret += " "; 
             return ret;
         }
     }
