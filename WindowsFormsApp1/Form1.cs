@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("ez 10" + Class1.space(10) + "space");
+            MessageBox.Show("ez 10" + Class1.Space(10) + "space");
         }
     }
 }
