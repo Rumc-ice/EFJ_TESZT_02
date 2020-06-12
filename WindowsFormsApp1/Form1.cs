@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -16,6 +19,7 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        RestClient rClient = new RestClient();
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +40,53 @@ namespace WindowsFormsApp1
             doc_2.Flush();
             doc_2.Close();
             MessageBox.Show("ez 10" + Class1.Space(10) + "space");
+        }
+
+        private void btnWebapi_Click(object sender, EventArgs e)
+        {
+            //RestClient rClient = new RestClient();
+            rClient.endPoint = textBox1.Text;
+            debugOutput("Rest Client Created");
+
+            string strResponse = string.Empty;
+
+            strResponse = rClient.makeRequest();
+            Sajat_class vissza;
+            vissza = (Sajat_class)JsonConvert.DeserializeObject<Sajat_class>(strResponse); 
+
+            //MessageBox.Show(vissza.Nev);  
+            
+
+
+
+            debugOutput(strResponse); 
+        }
+
+        private void debugOutput(string strDebugText)
+        {
+            try
+            {
+                System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
+                txtResponse.Text = txtResponse.Text + strDebugText + Environment.NewLine;
+                txtResponse.SelectionStart = txtResponse.TextLength;
+                txtResponse.ScrollToCaret();
+            }
+            catch(Exception ex )
+            {
+                System.Diagnostics.Debug.Write(ex.Message, ToString() + Environment.NewLine);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+        private void rb_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton kuldo = (RadioButton)sender;
+            if (kuldo.Checked)
+                rClient.httpMethod = (httpVerb)int.Parse(kuldo.Tag.ToString()); 
+               
         }
     }
 }
