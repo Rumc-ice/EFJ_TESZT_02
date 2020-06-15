@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -47,6 +50,10 @@ namespace WindowsFormsApp1
             //RestClient rClient = new RestClient();
             rClient.endPoint = textBox1.Text;
             debugOutput("Rest Client Created");
+            //rClient.authTech = authenticationTechnique.RollYourOwn; 
+            rClient.authType = authenticationType.Basic;
+            rClient.userName = txtUserName.Text;
+            rClient.userPassword = txtPassword.Text;
 
             string strResponse = string.Empty;
 
@@ -87,6 +94,48 @@ namespace WindowsFormsApp1
             if (kuldo.Checked)
                 rClient.httpMethod = (httpVerb)int.Parse(kuldo.Tag.ToString()); 
                
+        }
+
+        dynamic sampleObj = new ExpandoObject();
+        private  double alap_ossz()
+        {
+            double ret = 0;
+            try
+            {
+                ret = sampleObj.szam_1 + sampleObj.szam_2;
+            } catch { };
+            return ret;
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            sampleObj.szam_1 = (double)2;
+            sampleObj.szam_2 = (double)2.5;
+
+            
+
+            Func<double, double, double> func = (szam_1, szam_2) => szam_1 + szam_2;
+            Func<double> func_2 = alap_ossz;
+
+
+            sampleObj.osszeg = func_2; 
+            MessageBox.Show(sampleObj.szam_1.ToString());
+            MessageBox.Show(sampleObj.szam_2.ToString());
+            MessageBox.Show(sampleObj.osszeg().ToString());
+
+
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

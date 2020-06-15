@@ -14,10 +14,29 @@ namespace WindowsFormsApp1
         PUT,
         DELETE
     }
+
+    public enum authenticationType
+    {
+        Basic,
+        NTLM
+    }
+    public enum authenticationTechnique
+    {
+        RollYourOwn,
+        NerworkCredential
+    }
+
     class RestClient
     {
         public string endPoint { get; set; }
         public httpVerb  httpMethod { get; set; }
+        public authenticationType authType { get; set; }
+        public authenticationTechnique authTech { get; set; }
+        public string userName { get; set; }
+        public string userPassword { get; set; }
+
+
+
 
         public RestClient()
         {
@@ -30,11 +49,15 @@ namespace WindowsFormsApp1
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(endPoint) ;
 
-            request.Method = httpMethod.ToString() ;  
+            request.Method = httpMethod.ToString() ;
+            String authHeader = System.Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(userName + ":" + userPassword));
+            request.Headers.Add("Authorization",authType.ToString()+ " " + authHeader); 
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            HttpWebResponse response = null;
+            try 
             {
-                if(response.StatusCode!=HttpStatusCode.OK)
+                response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode!=HttpStatusCode.OK)
                 {
                     throw new ApplicationException("error code: " + response.StatusCode.ToString());
                 }
@@ -51,9 +74,18 @@ namespace WindowsFormsApp1
                 }
 
 
+            }catch(Exception ex )
+            {
+                strResponseValue = "{\"errorMessages\":[\"" + ex.Message.ToString() + "\"],\"errors\":{}}";  
             }
 
-
+            finally
+            {
+                if(response!=null)
+                {
+                    ((IDisposable)response).Dispose(); 
+                }
+            }
 
 
 
