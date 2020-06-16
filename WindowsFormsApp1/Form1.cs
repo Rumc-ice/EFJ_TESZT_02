@@ -97,15 +97,7 @@ namespace WindowsFormsApp1
         }
 
         dynamic sampleObj = new ExpandoObject();
-        private  double alap_ossz()
-        {
-            double ret = 0;
-            try
-            {
-                ret = sampleObj.szam_1 + sampleObj.szam_2;
-            } catch { };
-            return ret;
-        }
+        
 
 
         private void button2_Click(object sender, EventArgs e)
@@ -113,7 +105,16 @@ namespace WindowsFormsApp1
             sampleObj.szam_1 = (double)2;
             sampleObj.szam_2 = (double)2.5;
 
-            
+            double alap_ossz()
+            {
+                double ret = 0;
+                try
+                {
+                    ret = sampleObj.szam_1 + sampleObj.szam_2;
+                }
+                catch { };
+                return ret;
+            }
 
             Func<double, double, double> func = (szam_1, szam_2) => szam_1 + szam_2;
             Func<double> func_2 = alap_ossz;
@@ -123,6 +124,19 @@ namespace WindowsFormsApp1
             MessageBox.Show(sampleObj.szam_1.ToString());
             MessageBox.Show(sampleObj.szam_2.ToString());
             MessageBox.Show(sampleObj.osszeg().ToString());
+
+            addInstance(sampleObj,"ujtag", "ujtag_értéke!");
+
+
+            foreach (var property in (IDictionary<String, Object>)sampleObj)
+            {
+                MessageBox.Show(property.Value+": "+  property.Key);
+            }
+
+            void addInstance(object P_obj ,string name, string value)
+            {
+                ((IDictionary<String, Object>)P_obj).Add(name, value);
+            }
 
 
 
