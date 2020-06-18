@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using sajat_class;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -151,5 +152,11 @@ namespace WindowsFormsApp1
         {
 
         }
+
+        private void buttonNew_Click(object sender, EventArgs e)
+        {
+            Form2 new_design = new Form2();
+            new_design.Show();
+            }
     }
 }

@@ -20,5 +20,27 @@ namespace WindowsFormsApp1
         {
            
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ((Form3)((Button)sender).Parent).Close();  
+        }
+
+        private void Form3_Leave(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void Form3_FormClosed(object sender, FormClosedEventArgs e)
+        {
+           
+        }
+
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            //ActiveForm.Controls["panel1"].Controls["button2"].Enabled = true;             
+            ActiveForm.Controls["panel1"].Enabled = true;             
+        }
     }
 }
