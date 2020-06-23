@@ -87,6 +87,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(688, 23);
             this.textBox1.TabIndex = 4;
+            this.textBox1.Text = "http://localhost/ketto/WeatherForecast";
             // 
             // txtResponse
             // 
@@ -103,12 +104,10 @@
             // rbPOST
             // 
             this.rbPOST.AutoSize = true;
-            this.rbPOST.Checked = true;
             this.rbPOST.Location = new System.Drawing.Point(6, 47);
             this.rbPOST.Name = "rbPOST";
             this.rbPOST.Size = new System.Drawing.Size(53, 19);
             this.rbPOST.TabIndex = 8;
-            this.rbPOST.TabStop = true;
             this.rbPOST.Tag = "1";
             this.rbPOST.Text = "POST";
             this.rbPOST.UseVisualStyleBackColor = true;
@@ -117,10 +116,12 @@
             // rbGET
             // 
             this.rbGET.AutoSize = true;
+            this.rbGET.Checked = true;
             this.rbGET.Location = new System.Drawing.Point(6, 22);
             this.rbGET.Name = "rbGET";
             this.rbGET.Size = new System.Drawing.Size(45, 19);
             this.rbGET.TabIndex = 7;
+            this.rbGET.TabStop = true;
             this.rbGET.Tag = "0";
             this.rbGET.Text = "GET";
             this.rbGET.UseVisualStyleBackColor = true;
@@ -142,6 +143,7 @@
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(280, 23);
             this.txtUserName.TabIndex = 8;
+            this.txtUserName.Text = "user";
             // 
             // gbType
             // 
@@ -161,6 +163,7 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(223, 23);
             this.txtPassword.TabIndex = 10;
+            this.txtPassword.Text = "Siker9020";
             // 
             // label1
             // 
@@ -203,6 +206,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(113, 88);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(238, 98);

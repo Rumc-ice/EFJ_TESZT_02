@@ -42,5 +42,10 @@ namespace WindowsFormsApp1
             //ActiveForm.Controls["panel1"].Controls["button2"].Enabled = true;             
             ActiveForm.Controls["panel1"].Enabled = true;             
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

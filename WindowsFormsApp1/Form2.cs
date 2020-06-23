@@ -1,15 +1,41 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+
+
+
 
 namespace WindowsFormsApp1
 {
     public partial class Form2 : Form
     {
+        static class NativeMethods
+        {
+
+            [DllImport("netapi32.dll")]
+            public static extern void NetApiBufferFree(IntPtr bufptr);
+
+            [DllImport("netapi32.dll")]
+            public static extern UInt32 NetUserEnum([MarshalAs(UnmanagedType.LPWStr)] String servername, UInt32 level, UInt32 filter, ref IntPtr bufptr, UInt32 prefmaxlen, ref UInt32 entriesread, ref UInt32 totalentries, IntPtr resumehandle);
+
+            [DllImport("netapi32.dll")]
+            public static extern UInt32 NetLocalGroupEnum([MarshalAs(UnmanagedType.LPWStr)] String servername, UInt32 level, ref IntPtr bufptr, UInt32 prefmaxlen, ref UInt32 entriesread, ref UInt32 totalentries, IntPtr resumehandle);
+
+            [DllImport("Netapi32.dll")]
+            public extern static UInt32 NetLocalGroupGetMembers([MarshalAs(UnmanagedType.LPWStr)] String servername, [MarshalAs(UnmanagedType.LPWStr)] String localgroupname, UInt32 level, ref IntPtr bufptr, UInt32 prefmaxlen, ref UInt32 entriesread, ref UInt32 totalentries, IntPtr resumehandle);
+
+        }
         public Form2()
         {
             InitializeComponent();
@@ -34,18 +60,24 @@ namespace WindowsFormsApp1
             if (((Button)sender).Name == "button2")
             {
                 Form3 new_design_2 = new Form3();
-                new_design_2.IsMdiContainer = false;
-                new_design_2.MdiParent = this;
                 
-                Label label_nev = new Label();
-                label_nev.Text = "Nevem senki";
-                label_nev.Top = 50;
-                label_nev.Left = 100;
-                new_design_2.Controls.Add(label_nev);   
-                new_design_2.Show();
-                new_design_2.WindowState = FormWindowState.Maximized;
+                    new_design_2.IsMdiContainer = false;
+                    new_design_2.MdiParent = this;
+
+                    Label label_nev = new Label();
+                    label_nev.Text = "Nevem senki";
+                    label_nev.Top = 150;
+                    label_nev.Left = 100;
+                    new_design_2.Controls.Add(label_nev);
+               
+                
+
+                new_design_2.WindowState = FormWindowState.Maximized; 
                 //((Button)sender).Enabled = false;
-                panel1.Enabled = false;  
+
+                panel1.Enabled = false;
+                    new_design_2.Show();
+                
             }
 
         }
@@ -105,7 +137,132 @@ namespace WindowsFormsApp1
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            IEnumerable<String> usernames = GetUserNames();
+
+            foreach (string user in usernames)
+            {
+               listBox1.Items.Add(user);
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            IEnumerable<String> usernames = GetUserNames();
+
+            foreach (string user in usernames)
+            {
+                MessageBox.Show(user); 
+            }
+            MessageBox.Show(Environment.MachineName);  
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            IEnumerable<String> groupnames = GetLocalGroupNames();
+            //IEnumerable<String> usernames;
+            //string currentUser = Environment.MachineName + "\\" + Environment.UserName;
+            string currentUser = Environment.MachineName + "\\" + "Vendég";
+            //foreach (string group in groupnames)
+            //{
+            //    usernames = GetLocalGroupUsers(group);
+            //    foreach (string user in usernames)
+            //    {
+            //        MessageBox.Show("Csoport: " + group + Environment.NewLine + "Felhasználó: " + user);
+            //    }  
+            //}
+            foreach (string group in groupnames)
+            {
+                if(GetLocalGroupUsers(group).Contains(currentUser))
+                {
+                    MessageBox.Show("Csoport: " + group + Environment.NewLine + "Felhasználó: " + currentUser);
+                }
+            }
 
         }
+
+        IEnumerable<String> GetUserNames()
+        {
+            var buffer = IntPtr.Zero;
+            try
+            {
+                UInt32 entriesRead = 0;
+                UInt32 totalEntries = 0;
+                var result = NativeMethods.NetUserEnum(null, 0, 0, ref buffer, UInt32.MaxValue, ref entriesRead, ref totalEntries, IntPtr.Zero);
+                if (result != 0)
+                    throw new Win32Exception((Int32)result);
+                var userNames = Enumerable
+                  .Range(0, (Int32)entriesRead)
+                  .Select(
+                    i => {
+                        var userInfo = Marshal.ReadIntPtr(buffer, i * IntPtr.Size);
+                        var userName = Marshal.PtrToStringAuto(userInfo);
+                        return userName;
+                    }
+                  )
+                  .ToList();
+                return userNames;
+            }
+            finally
+            {
+                NativeMethods.NetApiBufferFree(buffer);
+            }
+        }
+
+        IEnumerable<String> GetLocalGroupNames()
+        {
+            var buffer = IntPtr.Zero;
+            try
+            {
+                UInt32 entriesRead = 0;
+                UInt32 totalEntries = 0;
+                var result = NativeMethods.NetLocalGroupEnum(null, 0, ref buffer, UInt32.MaxValue, ref entriesRead, ref totalEntries, IntPtr.Zero);
+                if (result != 0)
+                    throw new Win32Exception((Int32)result);
+                var localGroupNames = Enumerable
+                  .Range(0, (Int32)entriesRead)
+                  .Select(
+                    i => {
+                        var localGroupInfo = Marshal.ReadIntPtr(buffer, i * IntPtr.Size);
+                        var groupName = Marshal.PtrToStringAuto(localGroupInfo);
+                        return groupName;
+                    }
+                  )
+                  .ToList();
+                return localGroupNames;
+            }
+            finally
+            {
+                NativeMethods.NetApiBufferFree(buffer);
+            }
+        }
+
+        IEnumerable<String> GetLocalGroupUsers(String localGroupName)
+        {
+            var buffer = IntPtr.Zero;
+            try
+            {
+                UInt32 entriesRead = 0;
+                UInt32 totalEntries = 0;
+                var result = NativeMethods.NetLocalGroupGetMembers(null, localGroupName, 3, ref buffer, UInt32.MaxValue, ref entriesRead, ref totalEntries, IntPtr.Zero);
+                if (result != 0)
+                    throw new Win32Exception((Int32)result);
+                var userNames = Enumerable
+                  .Range(0, (Int32)entriesRead)
+                  .Select(
+                    i => {
+                        var membersInfo = Marshal.ReadIntPtr(buffer, i * IntPtr.Size);
+                        var userName = Marshal.PtrToStringAuto(membersInfo);
+                        return userName;
+                    }
+                  )
+                  .ToList();
+                return userNames;
+            }
+            finally
+            {
+                NativeMethods.NetApiBufferFree(buffer);
+            }
+        }
+
     }
 }

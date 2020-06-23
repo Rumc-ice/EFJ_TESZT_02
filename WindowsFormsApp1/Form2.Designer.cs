@@ -40,8 +40,10 @@
             this.panel_semafor = new System.Windows.Forms.Panel();
             this.textEmail = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label2 = new System.Windows.Forms.Label();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -58,7 +60,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(159, 498);
+            this.panel1.Size = new System.Drawing.Size(160, 500);
             this.panel1.TabIndex = 0;
             // 
             // button5
@@ -126,7 +128,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(159, 100);
+            this.panel3.Size = new System.Drawing.Size(160, 100);
             this.panel3.TabIndex = 2;
             // 
             // label1
@@ -144,12 +146,13 @@
             this.panel_semafor.BackColor = System.Drawing.Color.Yellow;
             this.panel_semafor.Location = new System.Drawing.Point(148, 104);
             this.panel_semafor.Name = "panel_semafor";
-            this.panel_semafor.Size = new System.Drawing.Size(11, 100);
+            this.panel_semafor.Size = new System.Drawing.Size(12, 100);
             this.panel_semafor.TabIndex = 2;
             // 
             // textEmail
             // 
             this.textEmail.AllowDrop = true;
+            this.textEmail.Enabled = false;
             this.helpProvider1.SetHelpKeyword(this.textEmail, "1");
             this.helpProvider1.SetHelpString(this.textEmail, "E-Mail címed kell ide");
             this.textEmail.Location = new System.Drawing.Point(314, 321);
@@ -157,6 +160,7 @@
             this.helpProvider1.SetShowHelp(this.textEmail, true);
             this.textEmail.Size = new System.Drawing.Size(191, 27);
             this.textEmail.TabIndex = 7;
+            this.textEmail.Visible = false;
             this.textEmail.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textEmail_MouseClick);
             this.textEmail.MouseHover += new System.EventHandler(this.textEmail_MouseHover);
             this.textEmail.Validating += new System.ComponentModel.CancelEventHandler(this.textEmail_Validating);
@@ -166,21 +170,43 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // label2
+            // button6
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(278, 77);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 21);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "label2";
+            this.button6.Location = new System.Drawing.Point(378, 125);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(95, 31);
+            this.button6.TabIndex = 11;
+            this.button6.Text = "button6";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(505, 125);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(95, 31);
+            this.button7.TabIndex = 11;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 21;
+            this.listBox1.Location = new System.Drawing.Point(234, 178);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(456, 130);
+            this.listBox1.TabIndex = 13;
             // 
             // Form2
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(44)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(802, 498);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(960, 500);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.textEmail);
             this.Controls.Add(this.panel_semafor);
             this.Controls.Add(this.panel1);
@@ -216,7 +242,9 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.TextBox textEmail;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

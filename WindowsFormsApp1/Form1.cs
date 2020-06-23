@@ -27,6 +27,7 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,19 +47,30 @@ namespace WindowsFormsApp1
             MessageBox.Show("ez 10" + Class1.Space(10) + "space");
         }
 
-        private void btnWebapi_Click(object sender, EventArgs e)
+        private async void btnWebapi_Click(object sender, EventArgs e)
         {
             //RestClient rClient = new RestClient();
             rClient.endPoint = textBox1.Text;
             debugOutput("Rest Client Created");
-            //rClient.authTech = authenticationTechnique.RollYourOwn; 
-            rClient.authType = authenticationType.Basic;
+            if (radioButton3.Checked)
+            {
+                rClient.authTech = authenticationTechnique.RollYourOwn;
+                rClient.authType = authenticationType.Basic;
+            }
+            else
+            {
+                rClient.authTech = authenticationTechnique.NerworkCredential;
+                rClient.authType = authenticationType.NTLM ;
+            }
             rClient.userName = txtUserName.Text;
             rClient.userPassword = txtPassword.Text;
 
             string strResponse = string.Empty;
 
-            strResponse = rClient.makeRequest();
+            //strResponse = rClient.makeRequest();
+            await rClient.makeRequest();
+
+            strResponse = rClient.asyncVissza(); 
             Sajat_class vissza;
             vissza = (Sajat_class)JsonConvert.DeserializeObject<Sajat_class>(strResponse); 
 
@@ -155,8 +167,10 @@ namespace WindowsFormsApp1
 
         private void buttonNew_Click(object sender, EventArgs e)
         {
-            Form2 new_design = new Form2();
-            new_design.Show();
+            using (Form2 new_design = new Form2())
+            {
+                new_design.ShowDialog();
             }
+        }
     }
 }
